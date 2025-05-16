@@ -77,31 +77,31 @@ class DataTransformation:
             target_column_name="math_score"
             numerical_columns=["writing_score","reading_score"]
 
-            input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
-            target_feature_train_df=train_df[target_column_name]
+            input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)  # same as X_train
+            target_feature_train_df=train_df[target_column_name]  # Y_train
 
-            input_feature_test_df=test_df.drop(columns=[target_column_name],axis=1)
-            target_feature_test_df=test_df[target_column_name]
+            input_feature_test_df=test_df.drop(columns=[target_column_name],axis=1) # same as X_test
+            target_feature_test_df=test_df[target_column_name] # same as Y_test
 
             logging.info(f"Applying preprocessing object on training and testing dataframe")
 
-            input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
-            input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
+            input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df) # perform the transfomer on the train data
+            input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df) # use the fitted train data and apply it to test data
 
             train_arr= np.c_[
                 input_feature_train_arr, np.array(target_feature_train_df)
-            ]
+            ] # concat X_train and Y_train into 1 var , change to array
 
             test_arr= np.c_[
                 input_feature_test_arr, np.array(target_feature_test_df)
-            ]
+            ] # concat X_test and Y_test into 1 var , change to array
 
             logging.info(f"Saved preprocessing object")
 
             save_object(
 
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
-                obj=preprocessing_obj
+                obj=preprocessing_obj # saved the data learned from the ColumnTransformer
 
             )
 
